@@ -1,0 +1,9 @@
+#! /usr/bin/env node
+
+// babel es6 => es5
+// @babel/cli   在命令行中可以解析代码
+// @babel/core   解析核心模块
+// @babel/preset-env   es6=>es5
+// 这个文件的作用只做require
+
+require('../dist/main')
