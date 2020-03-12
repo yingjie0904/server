@@ -45,6 +45,8 @@ app.use(async (ctx, next)=>{
     // ctx.body = {name: 1}
     ctx.body = fs.createReadStream('1.js')
 })
-
+app.on('error', function(err){   //catch
+    console.log(err);
+})
 app.listen(4000)
 
