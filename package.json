@@ -8,6 +8,7 @@
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
     "chalk": "^3.0.0",
+    "co": "^4.6.0",
     "commander": "^4.1.1",
     "ejs": "^3.0.1",
     "mime": "^2.4.4",
