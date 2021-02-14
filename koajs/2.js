@@ -1,6 +1,10 @@
 const Koa = require('koa');
 const app = new Koa();
-const fs = require('fs')
+const fs = require('fs');
+const path = require('path');
+const mime = require('mime');
+const static = require('koa-static');
+// 差图片解析上传
 // const bodyparser = require('koa-bodyparser') // 不支持图片
 
 // 1 可以扩展 2 可以决定是否向下执行 3 可以实现权限 4 一般放在真实执行逻辑上面
@@ -22,7 +26,26 @@ function bodyparser(){
         await next();
     }
 }
-app.use(bodyparser())
+
+function static(dirname){
+    return async (ctx, next)=>{
+        try{
+            let filePath = path.join(dirname, ctx.path)
+            let statObj = await fs.stat(filePath);
+            if(statObj.isDirectory()){
+                filePath = path.join(filePath, 'index.html')
+                await fs.access(filePath);
+            }
+            ctx.set('Content-Type', mime.getType(filePath)+';charset=utf-8')
+            ctx.body = createReadStream(filePath)
+        }catch(e){
+            await next();
+        }
+    }
+}
+app.use(bodyparser());
+app.use(static(path.resolve(__dirname, 'upload')))
+
 app.use(async (ctx, next)=>{
     if(ctx.path === '/form' && ctx.method === 'GET'){
         // ctx.set('Content-Disposition', "attachment;filename=FileName.txt");
